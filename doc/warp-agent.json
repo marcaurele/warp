@@ -1,0 +1,8 @@
+{
+    "host":    "agent.example.com",
+    "log":     "syslog",
+    "server":  "controller.example.com:6380",
+    "cacert":  "/etc/warp/certs/ca-crt.pem",
+    "cert":    "/etc/warp/certs/agent.pem",
+    "privkey": "/etc/warp/certs/agent.key.pem"
+}

@@ -13,7 +13,9 @@
 (def ^:dynamic *archive* nil)
 (def ^:dynamic *watcher* nil)
 
-(def ropts {:prefix "public/"})
+(def prefix
+  "Resource options"
+  {:prefix "public/"})
 
 (def api-routes
   ["/" [[""                                       (redirect "/index.html")]
@@ -23,7 +25,7 @@
                  ["executions" [[""               {:get  :list-executions}]
                                 [["/" :id]        {:get  :get-execution}]]]
                  ["replays"    [[["/" :id]        {:get  :get-replay}]]]]]
-        [""                                       (resources-maybe ropts)]]])
+        [""                                       (resources-maybe prefix)]]])
 
 (defn sse-event
   [content e]

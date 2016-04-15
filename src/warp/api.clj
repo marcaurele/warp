@@ -18,7 +18,7 @@
   {:prefix "public/"})
 
 (def api-routes
-  ["/" [[""                                       (redirect "/index.html")]
+  ["/" [[""                                       (redirect "index.html")]
         ["api/" [["scenarios"  [[""               {:get  :list-scenarios}]
                                 [["/" :id]        {:get  :get-scenario}]
                                 [["/" :id "/run"] {:post :start-execution}]]]

@@ -56,14 +56,14 @@
 
 (defn refresh-scenarios
   []
-  (pipe-get "/api/scenarios"))
+  (pipe-get "api/scenarios"))
 
 (defn refresh-scenario
   [id]
   (println "refreshing scenario:" id)
-  (pipe-get "/api/scenarios/" id))
+  (pipe-get "api/scenarios/" id))
 
 (defn refresh-replay
   [id]
   (println "refreshing replay:" id)
-  (pipe-get "/api/replays/" id))
+  (pipe-get "api/replays/" id))

@@ -28,7 +28,11 @@
     (case type
       :ping    cmd
       :sleep   cmd
-      :service cmd
+      :service (if literal
+                 cmd
+                 (-> cmd
+                     (update :service interpol args "NOSERVICE")
+                     (update :action interpol args "status")))
       :shell   (if literal
                  cmd
                  (-> cmd

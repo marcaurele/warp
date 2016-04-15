@@ -2,7 +2,7 @@
 
 DISTRIBUTION := $(shell lsb_release -sc)
 VERSION := $(shell head -n1 project.clj | awk '{print $$3}')
-DEBVERSION := $(subst -SNAPSHOT,~$(shell date +%Y%m%d-%H%M%S),$(VERSION))-0~$(DISTRIBUTION)2
+DEBVERSION := $(subst -SNAPSHOT,~$(shell date +%Y%m%d-%H%M%S),$(VERSION))-0~$(DISTRIBUTION)3
 
 %:
 	dh $@

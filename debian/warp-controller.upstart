@@ -12,11 +12,11 @@ setuid _warp
 setgid _warp
 
 pre-start script
-    [ -r "/usr/share/java/warp.jar" ] || exit 0
+    [ -r "/usr/share/java/warp-controller.jar" ] || exit 0
     [ -r "/etc/warp/controller.clj" ] || exit 0
 end script
 
 script
-    [ -r /etc/default/warp ] && . /etc/default/warp
+    [ -r /etc/default/warp-controller ] && . /etc/default/warp-controller
     exec ${JAVA} ${JAVA_OPTS} -cp ${CLASSPATH} warp.main -f /etc/warp/controller.clj
 end script

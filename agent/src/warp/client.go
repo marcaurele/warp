@@ -35,12 +35,15 @@ func NewClient(cfg Config) *Client {
 		logger = log.New(os.Stdout, "warp: ", 0)
 	case cfg.LogTo == "stderr":
 		logger = log.New(os.Stderr, "warp: ", 0)
-	case cfg.LogTo == "":
+	case cfg.LogTo == "syslog":
 		logger, err = syslog.NewLogger(syslog.LOG_INFO | syslog.LOG_DAEMON, 0)
 		if err != nil {
 			fmt.Printf("cannot initialize logger: %v", err)
 			os.Exit(1)
 		}
+	default:
+		fmt.Printf("cannot initialize logger, bad configuration")
+		os.Exit(1)
 	}
 
 	cert, err := tls.LoadX509KeyPair(cfg.Cert, cfg.PrivKey)

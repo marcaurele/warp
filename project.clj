@@ -1,4 +1,4 @@
-(defproject warp "0.7.0"
+(defproject warp "0.7.1-SNAPSHOT"
   :main warp.main
   :plugins [[lein-cljsbuild "1.1.3"]]
   :dependencies [[org.clojure/clojure           "1.8.0"]

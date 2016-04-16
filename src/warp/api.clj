@@ -37,6 +37,7 @@
     (publish-state [this {:keys [state] :as state}]
       (sse-event content {:type :state :state state})
       (when (= state :closed)
+        (http/stream content "\n")
         (http/close! content)))
     (publish-event [this event]
       (sse-event content {:type :event :event event}))))

@@ -22,7 +22,7 @@
    (interpol input args "")))
 
 (defn prepare-command
-  [args {:keys [literal type] :as cmd}]
+  [{:keys [literal type] :as cmd} args]
   (if (nil? cmd)
     (throw (ex-info "invalid command for scenario" {}))
     (case type
@@ -41,7 +41,7 @@
       (throw (ex-info "invalid command type" {:command cmd})))))
 
 (defn prepare-matcher
-  [args {:keys [type] :as matcher}]
+  [{:keys [type] :as matcher} args]
   (if (nil? matcher)
     {:type "none"}
     (case type
@@ -61,8 +61,9 @@
         (cond-> profile (assoc :matcher
                                (or (get profiles (keyword profile))
                                    (throw (ex-info "invalid profile" {})))))
-        (update :matcher  (partial prepare-matcher matchargs))
-        (update :commands (partial mapv (partial prepare-command args)))
+        (update :matcher  #(prepare-matcher % matchargs))
+        (update :commands #(map prepare-command % (repeat args)))
+        (update :commands vec)
         (dissoc :profiles))))
 
 (defn fetch

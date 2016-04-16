@@ -25,7 +25,7 @@
                                         :asset-path    "/warp"
                                         :optimizations :whitespace
                                         :pretty-print  false}}}}
-  :profiles {:dev     {:cljsbuild {:builds {:app {:compiler {:source-map true}}}}}
+  :profiles {:dev     {:cljsbuild {:builds {:app {:compiler {}}}}}
              :uberjar {:omit-source true
                        :aot         :all
                        :prep-tasks ["compile" ["cljsbuild" "once"]]

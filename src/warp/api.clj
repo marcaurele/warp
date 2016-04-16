@@ -29,7 +29,7 @@
 
 (defn sse-event
   [content e]
-  (http/stream content (format "data: %s\n" (json/generate-string e))))
+  (http/stream content (format "data: %s\n\n" (json/generate-string e))))
 
 (defn execution-stream-listener
   [content]
@@ -37,7 +37,7 @@
     (publish-state [this {:keys [state] :as state}]
       (sse-event content {:type :state :state state})
       (when (= state :closed)
-        (http/stream content "\n")
+        (http/stream content "\n\n")
         (http/close! content)))
     (publish-event [this event]
       (sse-event content {:type :event :event event}))))

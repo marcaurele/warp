@@ -49,9 +49,9 @@
       :none matcher
       :host (update matcher :host (partial interpol args))
       :fact (update matcher :value (partial interpol args))
-      :not  (update matcher :clause (partial prepare-matcher args))
-      :or   (update matcher :clauses (mapv (partial prepare-matcher args)))
-      :and  (update matcher :clauses (mapv (partial prepare-matcher args)))
+      :not  (update matcher :clause  #(prepare-matcher % args))
+      :or   (update matcher :clauses #(mapv prepare-matcher % (repeat args)))
+      :and  (update matcher :clauses #(mapv prepare-matcher % (repeat args)))
       (throw (ex-info "invalid matcher" {:matcher matcher :status 400})))))
 
 (defn prepare-raw

@@ -81,7 +81,7 @@
         execution   (x/make-execution id scenario listener)]
     (swap! executions assoc id execution)
     (a/go
-      (a/<! (a/timeout timeout))
+      (a/<! (a/timeout ack-timeout))
       (a/>! (get-in engine [:mux :in]) {:opcode :ack-timeout :sequence id}))
     (a/go
       (a/<! (a/timeout timeout))

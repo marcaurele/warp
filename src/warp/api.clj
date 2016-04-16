@@ -66,10 +66,6 @@
 
 (defmulti dispatch :handler)
 
-(defmethod dispatch :main-page
-  [request]
-  {:status 200 :headers {:content-type "text/plain"} :body "hello\n"})
-
 (defmethod dispatch :list-scenarios
   [request]
   {:status 200
@@ -110,9 +106,9 @@
     (info "will start" scenario)
     (sse-event content {:type :info :message "starting execution"})
     {:status  200
-     :headers {:headers {:content-type      "text/event-stream"
-                         :x-accel-buffering "no"
-                         :cache-control     "no-cache"}}
+     :headers {:content-type      "text/event-stream"
+               :x-accel-buffering "no"
+               :cache-control     "no-cache"}
      :body    content}))
 
 

@@ -47,8 +47,8 @@
     (case type
       :all  matcher
       :none matcher
-      :host (update matcher :host (partial interpol args))
-      :fact (update matcher :value (partial interpol args))
+      :host (update matcher :host #(interpol % args ""))
+      :fact (update matcher :value #(interpol % args ""))
       :not  (update matcher :clause  #(prepare-matcher % args))
       :or   (update matcher :clauses #(mapv prepare-matcher % (repeat args)))
       :and  (update matcher :clauses #(mapv prepare-matcher % (repeat args)))

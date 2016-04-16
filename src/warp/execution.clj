@@ -70,6 +70,8 @@
      (when (= state :closed)
        (throw (ex-info "augment: input while execution closed" {})))
      (case opcode
+       :init
+       execution
        :ack-timeout
        (assoc execution :can-close? true)
        :timeout

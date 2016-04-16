@@ -19,7 +19,7 @@
   (str (java.util.UUID/randomUUID)))
 
 (def progress-command?
-  #{:command-start :command-deny :command-step :command-end
+  #{:init :command-start :command-deny :command-step :command-end
     :ack-timeout :timeout})
 
 (defn process-event
@@ -81,6 +81,7 @@
         execution   (x/make-execution id scenario listener)]
     (swap! executions assoc id execution)
     (a/go
+      (a/>! (get-in engine [:mux :in]) {:opcode :init :sequence id})
       (a/<! (a/timeout ack-timeout))
       (a/>! (get-in engine [:mux :in]) {:opcode :ack-timeout :sequence id}))
     (a/go

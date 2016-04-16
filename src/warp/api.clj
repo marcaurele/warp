@@ -21,7 +21,7 @@
   ["/" [[""                                       (redirect "index.html")]
         ["api/" [["scenarios"  [[""               {:get  :list-scenarios}]
                                 [["/" :id]        {:get  :get-scenario}]
-                                [["/" :id "/run"] {:post :start-execution}]]]
+                                [["/" :id "/run"] {:get  :start-execution}]]]
                  ["executions" [[""               {:get  :list-executions}]
                                 [["/" :id]        {:get  :get-execution}]]]
                  ["replays"    [[["/" :id]        {:get  :get-replay}]]]]]
@@ -46,6 +46,23 @@
   (if (= request-method :error)
     (assoc request :handler :error)
     (match-route* api-routes uri request)))
+
+(defn any->vec
+  [o]
+  (cond
+    (nil? o)        nil
+    (sequential? o) (vec o)
+    :else           (vector o)))
+
+(defn build-args
+  [{:keys [get-params] :as request}]
+  (let [profile   (some-> get-params :profile keyword)
+        matchargs (any->vec (:matchargs get-params))
+        args      (any->vec (:args get-params))]
+    (cond-> {}
+      profile   (assoc :profile   profile)
+      matchargs (assoc :matchargs matchargs)
+      args      (assoc :args      args))))
 
 (defmulti dispatch :handler)
 
@@ -88,9 +105,9 @@
   (let [content   (http/content-stream)
         listener  (execution-stream-listener content)
         scenario  (get-in request [:route-params :id])
-        args      (json/parse-string (:body request) true)
+        args      (build-args request)
         execution (engine/new-execution *engine* scenario listener args)]
-    (info "will start" (pr-str scenario))
+    (info "will start" scenario)
     (sse-event content {:type :info :message "starting execution"})
     {:status  200
      :headers {:headers {:content-type      "text/event-stream"

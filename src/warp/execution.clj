@@ -57,8 +57,7 @@
   (-> client
       (update :steps conj output)
       (update :index inc)
-      (cond-> (not (:success output)) close
-              (>= (inc index) max)    close)))
+      (cond-> (not (:success output)) close)))
 
 (defmethod augment Execution
   [{:keys [id scenario state] :as execution} {:keys [host opcode sequence step] :as event}]

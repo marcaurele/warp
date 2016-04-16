@@ -55,14 +55,15 @@
       (throw (ex-info "invalid matcher" {:matcher matcher :status 400})))))
 
 (defn prepare-raw
-  [raw profile matchargs args]
-  (let [profiles (:profiles raw)
-        profile  (when profile (or (get profiles (keyword profile))
-                                   (throw (ex-info "invalid profile" {}))))
-        scenario (merge raw profile)]
+  [scenario profile matchargs args]
+  (let [profiles (:profiles scenario)]
     (-> scenario
+        (cond-> profile (assoc :matcher
+                               (or (get profiles (keyword profile))
+                                   (throw (ex-info "invalid profile" {})))))
         (update :matcher  (partial prepare-matcher matchargs))
-        (update :commands (partial mapv (partial prepare-command args))))))
+        (update :commands (partial mapv (partial prepare-command args)))
+        (dissoc :profiles))))
 
 (defn fetch
   [{:keys [watcher]} id {:keys [profile matchargs args]}]
